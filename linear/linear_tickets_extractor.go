@@ -208,11 +208,6 @@ func getCompletedIssues(apiKey string) ([]Issue, error) {
 							name
 						}
 					}
-					assignee {
-						id
-						name
-						email
-					}
 				}
 				pageInfo {
 					hasNextPage
@@ -299,9 +294,59 @@ func formatDateString(dateStr string) string {
 	return t.Format("2006-01-02 15:04:05")
 }
 
-// exportToJSON exports issues to JSON file
+// compactIssue is a flattened, minimal representation for JSON export
+type compactIssue struct {
+	Identifier  string   `json:"identifier"`
+	Title       string   `json:"title"`
+	Description string   `json:"description"`
+	URL         string   `json:"url"`
+	Team        string   `json:"team"`
+	Priority    string   `json:"priority"`
+	Estimate    string   `json:"estimate,omitempty"`
+	Labels      []string `json:"labels,omitempty"`
+	Project     string   `json:"project,omitempty"`
+	Cycle       string   `json:"cycle,omitempty"`
+	CreatedAt   string   `json:"createdAt"`
+	CompletedAt string   `json:"completedAt"`
+}
+
+// exportToJSON exports issues to a compact JSON file
 func exportToJSON(issues []Issue, filename string) error {
-	data, err := json.MarshalIndent(issues, "", "  ")
+	compact := make([]compactIssue, len(issues))
+	for i, issue := range issues {
+		labels := make([]string, len(issue.Labels.Nodes))
+		for j, l := range issue.Labels.Nodes {
+			labels[j] = l.Name
+		}
+
+		var project, cycle, estimate string
+		if issue.Project != nil {
+			project = issue.Project.Name
+		}
+		if issue.Cycle != nil {
+			cycle = issue.Cycle.Name
+		}
+		if issue.Estimate != nil {
+			estimate = fmt.Sprintf("%.0f", *issue.Estimate)
+		}
+
+		compact[i] = compactIssue{
+			Identifier:  issue.Identifier,
+			Title:       issue.Title,
+			Description: issue.Description,
+			URL:         issue.URL,
+			Team:        issue.Team.Name,
+			Priority:    formatPriority(issue.Priority),
+			Estimate:    estimate,
+			Labels:      labels,
+			Project:     project,
+			Cycle:       cycle,
+			CreatedAt:   formatDateString(issue.CreatedAt),
+			CompletedAt: formatDate(issue.CompletedAt),
+		}
+	}
+
+	data, err := json.MarshalIndent(compact, "", "  ")
 	if err != nil {
 		return fmt.Errorf("failed to marshal JSON: %w", err)
 	}
