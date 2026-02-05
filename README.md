@@ -73,5 +73,3 @@ Each extractor produces:
 
 - **Date range** — hardcoded constants at the top of each extractor's source file
 - **Output filenames** — set in `main()` of each extractor
-
-See [`linear/README.md`](linear/README.md) for detailed Linear extractor docs.
