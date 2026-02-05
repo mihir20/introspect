@@ -1,0 +1,33 @@
+# Binaries
+linear-extractor
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+
+# Test binary, built with `go test -c`
+*.test
+
+# Output files
+linear_completed_tickets.json
+linear_completed_tickets.csv
+*.json
+*.csv
+
+# Environment variables
+.env
+
+# Go workspace file
+go.work
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Logs
+*.log
