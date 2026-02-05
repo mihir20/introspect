@@ -31,3 +31,4 @@ go.work
 
 # Logs
 *.log
+/bin/
