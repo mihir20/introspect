@@ -37,6 +37,8 @@ clean:
 	@rm -rf $(BIN_DIR)
 	@rm -f linear_completed_tickets.json
 	@rm -f linear_completed_tickets.csv
+	@rm -f pull_requests_merged.json
+	@rm -f pull_requests_merged.csv
 	@echo "Cleaned!"
 
 # Format code
