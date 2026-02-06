@@ -1,4 +1,4 @@
-# Self Review
+# Introspect
 
 CLI tools to extract your completed work — Linear tickets and merged GitHub pull requests — within a configurable date range. Outputs to console table, JSON, and CSV.
 
