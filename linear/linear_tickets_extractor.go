@@ -170,6 +170,7 @@ func getCompletedIssues(apiKey string) ([]Issue, error) {
 			assignedIssues(
 				first: 100
 				after: $after
+				includeArchived: true
 				filter: {
 					completedAt: { gte: $startDate, lte: $endDate }
 				}
